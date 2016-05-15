@@ -1,0 +1,53 @@
+group 'trypp.support'
+version '0.2.0'
+
+buildscript {
+    ext {
+        kotlin_version = '1.+'
+        gdx_version = '1.9.2'
+        testng_version = '6.9.+'
+        truth_version = '0.28'
+    }
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+apply plugin: 'kotlin'
+repositories {
+    mavenLocal() // For trypp.support:core
+    mavenCentral()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    maven { url 'https://oss.sonatype.org/content/repositories/releases/' }
+}
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    compile "com.badlogicgames.gdx:gdx:$gdx_version"
+    compile "com.badlogicgames.gdx:gdx-box2d:$gdx_version"
+    compile 'trypp.support:core:+'
+
+    testCompile "com.google.truth:truth:$truth_version"
+    testCompile "org.testng:testng:$testng_version"
+    testCompile "com.badlogicgames.gdx:gdx-box2d-platform:$gdx_version:natives-desktop"
+}
+
+sourceSets.main.kotlin.srcDirs += 'src/main/code'
+sourceSets.test.kotlin.srcDirs += 'src/test/code'
+
+test {
+    useTestNG()
+}
+
+apply plugin: 'maven-publish'
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
