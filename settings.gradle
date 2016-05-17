@@ -1,1 +1,5 @@
 rootProject.name = 'libgdx'
+
+include 'trypp.support'
+
+project(':trypp.support').projectDir = file('../trypp.support')
