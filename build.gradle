@@ -40,9 +40,12 @@ dependencies {
 sourceSets.main.kotlin.srcDirs += 'src/main/code'
 sourceSets.test.kotlin.srcDirs += 'src/test/code'
 
+apply plugin: 'jacoco'
 test {
     useTestNG()
+    finalizedBy jacocoTestReport
 }
+
 
 apply plugin: 'maven-publish'
 publishing {
