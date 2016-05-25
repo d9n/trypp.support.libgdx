@@ -228,18 +228,18 @@ class World private constructor(gravity: Vector2,
     }
 
     fun createBoxBody(category: Int,
-                      hx: Float, hy: Float,
+                      w: Float, h: Float,
                       type: BodyType = BodyType.DynamicBody,
                       pos: Vector2? = null): Body {
-        polyShape.setAsBox(hx, hy)
+        polyShape.setAsBox(w / 2f, h / 2f)
         return createBody(category, polyShape, type, pos)
     }
 
     fun createBoxBody(category: Int,
-                      hsize: Vector2,
+                      size: Vector2,
                       type: BodyType = BodyType.DynamicBody,
                       pos: Vector2? = null): Body {
-        polyShape.setAsBox(hsize.x, hsize.y)
+        polyShape.setAsBox(size.x, size.y)
         return createBody(category, polyShape, type, pos)
     }
 
@@ -369,7 +369,7 @@ class World private constructor(gravity: Vector2,
     }
 
     private fun allowPassThru(contact: Contact): Boolean {
-        val handler = getCollisionHandler(contact) ?: return true
+        val handler = getCollisionHandler(contact) ?: return false
 
         if (handler.isFirstCategory(contact.fixtureA.filterData.categoryBits.toInt())) {
             val bodyFirst = bodyMap[contact.fixtureA.body]

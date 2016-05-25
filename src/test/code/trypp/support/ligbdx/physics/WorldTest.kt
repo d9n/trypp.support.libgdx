@@ -37,6 +37,22 @@ class WorldTest {
         world.dispose()
     }
 
+    @Test fun testBodiesCollideIfNoHandlersRegistered() {
+        val world = World.Builder().registerCollidable(BALL, BALL).build()
+
+        val ball1 = world.createCircleBody(BALL, 5.0f, pos = Vector2(-10f, -3f))
+        val ball2 = world.createCircleBody(BALL, 5.0f, pos = Vector2(10f, 3f))
+
+        ball1.setLinearVelocity(20f, 0f)
+        ball2.setLinearVelocity(-20f, 0f)
+
+        assertThat(ball1.position.y).isWithin(0f).of(-3f)
+        world.update(Duration.ofSeconds(1f))
+        assertThat(ball1.position.y).isLessThan(-4f)
+
+        world.dispose()
+    }
+
     @Test fun testDisableCollisionForBody() {
         val world = World.Builder().registerCollidable(BALL, BALL).build()
 

@@ -7,7 +7,7 @@ import trypp.support.ligbdx.physics.Body
  */
 abstract class CollisionAdapter : CollisionHandler {
     override fun allowPassThru(bodyA: Body, bodyB: Body): Boolean {
-        return true
+        return false
     }
 
     override fun onCollided(bodyA: Body, bodyB: Body) {
