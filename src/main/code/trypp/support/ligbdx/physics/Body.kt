@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.Body as B2Body
 class Body : Poolable {
     var world: World? = null
         private set
+
     internal var b2body: B2Body? = null
         private set
 
@@ -35,6 +36,12 @@ class Body : Poolable {
             b2body!!.linearVelocity = value
         }
 
+    var linearDamping: Float
+        get() = b2body!!.linearDamping
+        set(value) {
+            b2body!!.linearDamping = value
+        }
+
     val position: Vector2
         get() = b2body!!.worldCenter
 
@@ -53,6 +60,7 @@ class Body : Poolable {
             bodyDef.position.setZero()
         }
         fixtureDef.shape = shape
+        fixtureDef.friction = 0f
         fixtureDef.filter.categoryBits = category.toShort()
         fixtureDef.filter.maskBits = collidesWith.toShort()
 
@@ -62,6 +70,15 @@ class Body : Poolable {
 
     fun setLinearVelocity(vX: Float, vY: Float) {
         b2body!!.setLinearVelocity(vX, vY)
+    }
+
+    fun applyForce(vX: Float, vY: Float) {
+        b2body!!.applyForceToCenter(vX, vY, true);
+    }
+
+    fun applyImpluse(vX: Float, vY: Float) {
+        val worldCenter = b2body!!.worldCenter
+        b2body!!.applyLinearImpulse(vX, vY, worldCenter.x, worldCenter.y, true)
     }
 
     override fun toString(): String {
