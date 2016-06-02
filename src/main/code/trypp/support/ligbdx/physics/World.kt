@@ -78,7 +78,7 @@ class World private constructor(gravity: Vector2,
         /**
          * Box2D has a hard limit of 16 collision categories.
          */
-        var MAX_NUM_CATEGORIES = 16
+        val MAX_NUM_CATEGORIES = 16
 
         init {
             Box2D.init()
