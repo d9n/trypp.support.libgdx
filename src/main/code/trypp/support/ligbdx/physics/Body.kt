@@ -15,6 +15,12 @@ class Body : Poolable {
     var world: World? = null
         private set
 
+    var category = 0
+        private set
+
+    val mass: Float
+        get() = b2body!!.mass
+
     internal var b2body: B2Body? = null
         private set
 
@@ -36,6 +42,10 @@ class Body : Poolable {
             b2body!!.linearVelocity = value
         }
 
+    /**
+     * Damping which reduces the linear velocity each step. 0 means no damping, 1+ should start to
+     * reduce velocity more quickly. This value may require hand tuning to find what feels best.
+     */
     var linearDamping: Float
         get() = b2body!!.linearDamping
         set(value) {
@@ -52,6 +62,8 @@ class Body : Poolable {
             type: BodyType,
             pos: Vector2?) {
         this.world = world
+        this.category = category
+
         bodyDef.type = type
         if (pos != null) {
             bodyDef.position.set(pos)

@@ -165,6 +165,8 @@ class World private constructor(gravity: Vector2,
     val bodies: List<Body>
         get() = bodyPool.itemsInUse
 
+    val stepDuration = Duration.ofSeconds(1f / stepsPerSec)
+
     internal val b2World = B2World(gravity, true)
 
     private val bodyPool = HeapPool.of(Body::class, expectedBodyCount)
@@ -187,7 +189,6 @@ class World private constructor(gravity: Vector2,
      */
     private val skippedBodies = ArraySet<B2Body>(EXPECTED_NO_CONTACT_BODY_COUNT)
 
-    private val stepDuration = Duration.ofSeconds(1f / stepsPerSec)
     private val elapsedSoFar = Duration.zero()
 
     // Reusable shapes for creating bodies
@@ -300,7 +301,7 @@ class World private constructor(gravity: Vector2,
 
     fun update(elapsedTime: Duration) {
         elapsedSoFar.add(elapsedTime)
-        while (elapsedSoFar.getSeconds() > stepDuration.getSeconds()) {
+        while (elapsedSoFar.getSeconds() >= stepDuration.getSeconds()) {
             b2World.step(stepDuration.getSeconds(), VELOCITY_ITERATIONS, POSITION_ITERATIONS)
             elapsedSoFar.subtract(stepDuration)
 
